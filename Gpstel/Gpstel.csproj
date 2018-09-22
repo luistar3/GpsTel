@@ -371,6 +371,8 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ChipController.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\GpsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -381,6 +383,7 @@
     <Compile Include="Models\Departamento.cs" />
     <Compile Include="Models\Distrito.cs" />
     <Compile Include="Models\GPS.cs" />
+    <Compile Include="Models\jsonObject.cs" />
     <Compile Include="Models\ModelGps.cs" />
     <Compile Include="Models\ObservacionCliente.cs" />
     <Compile Include="Models\ObservacionPago.cs" />
@@ -401,6 +404,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Chip\Index.cshtml" />
+    <Content Include="Views\Gps\Index.cshtml" />
+    <Content Include="Views\Cliente\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

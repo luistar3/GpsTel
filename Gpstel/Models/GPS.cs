@@ -2,9 +2,14 @@ namespace Gpstel.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity;
     using System.Data.Entity.Spatial;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    using Models;
 
     public partial class GPS
     {
@@ -26,8 +31,11 @@ namespace Gpstel.Models
         [StringLength(20)]
         public string garantia { get; set; }
 
+
+        
         public int idchip { get; set; }
 
+       
         public DateTime? fecha_compra { get; set; }
 
         [StringLength(50)]
@@ -37,5 +45,97 @@ namespace Gpstel.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehiculo> Vehiculo { get; set; }
+
+        public void guardarEditar() {
+
+            try
+            {
+                using (var context = new ModelGps())
+                {
+                    if (this.idgps == 0)
+                    {
+                        context.Entry(this).State = EntityState.Added;
+                    }
+                    else
+                    {
+                        context.Entry(this).State = EntityState.Modified;
+                    }
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        public List<GPS> listarGps() {
+            var listarGps = new List<GPS>();
+
+            try
+            {
+                using (var context = new ModelGps()) {
+
+                    listarGps = context.GPS
+                        .Include("CHIP")
+                        .ToList();
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message);
+            }
+            
+
+            return listarGps;
+        }
+
+
+        public GPS obtenerGps(int id) {
+
+            var objGps = new GPS();
+
+            try
+            {
+                using (var context = new ModelGps())
+                {
+                    objGps = context.GPS
+                        .Include("Vehiculo")
+                        .Include("CHIP")                        
+                        .Where(x => x.idgps == id)
+                        .Single();
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message);
+            }
+            return objGps;
+
+        }
+
+        public void eliminarGps() {
+
+            try
+            {
+                using (var context = new ModelGps())
+                {
+                    context.Entry(this).State = EntityState.Deleted;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

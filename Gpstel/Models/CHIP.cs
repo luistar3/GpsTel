@@ -120,5 +120,34 @@ namespace Gpstel.Models
                 throw new Exception(e.Message);
             }
         }
+
+        public List<CHIP> obtenerChipnoRepetido() {
+
+            var noRepetido = new List<CHIP>();
+            try
+            {
+
+                using (var context = new ModelGps())
+                {
+
+                 
+
+                    //  noRepetido = context.CHIP.SqlQuery("Select * from CHIP where not exists (select null from GPS where GPS.idchip = CHIP.idchip)")
+                    //    .ToList();
+
+
+                    noRepetido = context.Database.SqlQuery<CHIP>("Select * from CHIP where not exists (select null from GPS where GPS.idchip = CHIP.idchip)")
+                   .ToList();
+
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return noRepetido;
+        }
     }
 }

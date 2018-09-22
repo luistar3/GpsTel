@@ -19,7 +19,7 @@
 
         </div>
         <div class="table-data__tool-right">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevo" onclick="habilitar()">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevo" onclick="limpiar();habilitar()">
                 <i class="zmdi zmdi-plus"></i>Agregar Nuevo Chip
             </button>
 
@@ -210,21 +210,22 @@
                         type: "POST",
                         url: "@Url.Action("getChip", "Chip")",
                         data: JSON.stringify({ id: idChip }),
-                        contentType: "application/json",
+                        contentType: "application/json;charset=utf-8",
                         success: function (chip) {
+                            
                           
                             document.getElementById("operador").disabled = true;
                             document.getElementById("tipoContrato").disabled = true;
                             document.getElementById("numero").disabled = true;
                             document.getElementById("guardar").disabled = true;
 
-                            $("#tituloModal").val("Ver");
+                           $("#tituloModal").val("Ver");
                             $("#idChip").val(chip.idchip);
-                            $("#operador").val(chip.operador);
+                           $("#operador").val(chip.operador);
                             $("#tipoContrato").val(chip.tipo_contrato);
                             $("#numero").val(parseInt(chip.numero));
 
-                           
+                            console.log(chip);
                         }
 
                     });
@@ -234,7 +235,7 @@
 <script>
 
 
-            function habilitar() {
+           function habilitar() {
 
 
                 document.getElementById("operador").disabled = false;
@@ -253,3 +254,13 @@
         location.href = "@Url.Action("eliminarChip", "Chip")"+"/"+id;
     }
 </script>
+
+<script>  
+    function limpiar() {
+        $("#idChip").val("0");
+        $("#operador").val("movistar");
+        $("#tipoContrato").val("prepago");
+        $("#numero").val("");
+    }
+
+  </script>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Gpstel.Models;
 
 
@@ -11,6 +12,7 @@ namespace Gpstel.Controllers
     public class ChipController : Controller
     {
         private BaseRespuesta resultado = new BaseRespuesta();
+        JavaScriptSerializer serializer = new JavaScriptSerializer();
         private CHIP objChip = new CHIP();
 
         // GET: Chip
@@ -29,7 +31,7 @@ namespace Gpstel.Controllers
             {
                 chip.guardarEditar();
 
-                resultado.mensaje = "chip creado correctamente";
+                resultado.mensaje = "Exito en el Proceso";
                 resultado.ok = "tru";
             }
             catch (Exception e)
@@ -47,6 +49,7 @@ namespace Gpstel.Controllers
         {
             var chip = new CHIP();
             chip = objChip.obtenerChip(id);
+            chip.GPS=null;
 
             return Json(chip);
         }
@@ -54,10 +57,18 @@ namespace Gpstel.Controllers
         
         public ActionResult eliminarChip(int id) {
 
-           
+            try
+            {
+                objChip.idchip = id;
+                objChip.eliminarChip();
+            }
+            catch (Exception)
+            {
 
-            objChip.idchip = id;
-            objChip.eliminarChip();
+                return Redirect("~/Chip");
+            }
+
+
 
             return Redirect("~/Chip");
         }

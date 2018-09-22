@@ -1,0 +1,285 @@
+﻿@model List<Gpstel.Models.Cliente>
+
+@using Gpstel.Models;
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Cliente</h2>
+<div class="col-md-12">
+
+
+    <div class="table-data__tool">
+        <div class="table-data__tool-left">
+
+            <div class="rs-select2--light rs-select2--sm">
+
+                <div class="dropDownSelect2"></div>
+            </div>
+
+        </div>
+        <div class="table-data__tool-right">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevo" onclick="limpiar();">
+                <i class="zmdi zmdi-plus"></i>Agregar Nuevo GPS
+            </button>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="table-responsive ">
+    <table id="example" class="display table table-data2" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha del Contrato</th>
+                <th>Estado Del Cliente</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>DNI/RUC</th>
+                <th>Telefono</th>
+                <th>Celular</th>
+                <th>Correo</th>
+                <th>Direccion</th>
+                <th>Distrito</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>@(item.idcliente) </td>
+                    <td>@(item.fecha_contrato) </td>
+                    @if (item.estado == "0")
+                    {
+                        <td>ACTIVO</td>
+                    }
+                    else
+                    {
+                        <td>INACTIVO</td>
+                    }
+
+
+                    <td>@(item.nombre)</td>
+
+                    <td>@(item.apellido)</td>
+                    <td>@(item.dni_ruc)</td>
+                    <td>@(item.telefono)</td>
+                    <td>@(item.celular)</td>
+                    <td>@(item.correo)</td>
+                    <td>@(item.direccion)</td>
+                    <td>@(item.Distrito.nombre) </td>
+
+
+
+
+
+                    <td>
+                        <div class="table-data-feature">
+
+                            <button type="button" class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#nuevo" onclick="obtenerGps('@item.idcliente')">
+                                <i class="zmdi zmdi-edit"></i>
+                            </button>
+
+                            <a href="#" title="Eliminar" class="item" onclick="eliminar('@item.idcliente')">
+                                <i class="zmdi zmdi-delete"> </i>
+
+                            </a>
+
+                        </div>
+                    </td>
+                </tr>
+
+            }
+
+
+
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Modelo</th>
+                <th>Estado de Uso</th>
+                <th>Garantia</th>
+                <th>Chip</th>
+                <th>Fecha</th>
+                <th>Imei</th>
+
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+
+</div>
+
+
+
+
+
+
+<!-- Modal Guardar/Editar -->
+<div class="modal fade" id="nuevo" tabindex="-1" role="dialog" aria-labelledby="nuevo chip" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="button" class="btn-info" id="tituloModal" value="Nuebo Chip" disabled />
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input value="0" type="hidden" id="idcliente" />
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Fecha:</label>
+                        <input type="text" data-date-format="dd/mm/yyyy" class="form-control time" id="idFecha" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Estado de Uso:</label>
+                        <select class="form-control" name="idEstadoUso" id="idEstado">
+                            <option value="1">ACTIVO</option>
+                            <option value="0">INACTIVO</option>
+
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="idNombre" placeholder="Nombre" />
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Apellido:</label>
+                        <input type="text" class="form-control" id="idApellido" placeholder="Apellido" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">DNI/RUC:</label>
+                        <input type="text" class="form-control" id="idDniRuc" placeholder="DNI o RUC" />
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Telefono:</label>
+                        <input type="text" class="form-control" id="idTelefono" placeholder="Telefono" />
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Celular:</label>
+                        <input type="text" class="form-control" id="idCelular" placeholder="Celular" />
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Telefono:</label>
+                        <input type="email" class="form-control" id="idEmail" placeholder="Email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Direccion</label>
+                        <input type="number" class="form-control" id="Dirección" placeholder="Dirección" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Departamento:</label>
+                        <select class="form-control" name="idDepartamento" id="idDepartamento">
+                            <option value="-1">Seleccione un Departemto</option>
+                            @foreach (var item in ViewBag.departamento)
+                            {
+                                <option value="@item.iddepartamento">@item.nombre </option>
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Provincia:</label>
+                        <select class="form-control" name="idEstadoUso" id="idProvincia"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Distrito:</label>
+                        <select class="form-control" name="idEstadoUso" id="idDistrito"></select>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <input type="button" value="Guardar" class="btn btn-primary" id="guardar" onclick="guardarGps()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    $('#idFecha').datepicker({
+        format: 'dd/mm/yyyy',
+        startDate: '-3d'
+    });
+
+    function eliminar(id) {
+        location.href = "@Url.Action("eliminarGps", "Gps")"+"/"+id;
+    }
+
+    $(document).ready(function ()
+    {
+
+        $('#idDepartamento').on('change', function ()
+        {
+
+            var departamento = $('#idDepartamento option:selected').val();      
+            
+                $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("cargarProvincias", "Cliente")",
+                        data: JSON.stringify({ iddepartamento: departamento }),
+                        contentType: "application/json",
+                    success: function (provincias) {
+                        console.log(provincias);
+                         
+
+                            var s= '<option value="-1">Seleccione una Provincia</option>'; 
+
+                            for (var i = 0; i < provincias.length; i++) {
+                                s += '<option value="' + provincias[i].idprovincia + '">' + provincias[i].nombre + '</option>';
+                            }
+
+                            $('#idProvincia').html(s);
+
+                        }
+
+                    });
+        });
+
+        $('#idProvincia').on('change', function ()
+        {
+
+            var provincia = $('#idProvincia option:selected').val();      
+            
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("cargarDitritos", "Cliente")",
+                    data: JSON.stringify({ idprovincia: provincia }),
+                    contentType: "application/json",
+                    success: function (distrito) {
+                        console.log(distrito);
+                                                   
+                        var s = '';
+                        for (var i = 0; i < distrito.length; i++) {
+                            s += '<option value="' + distrito[i].iddistrito + '">' + distrito[i].nombre + '</option>';
+                            }
+
+                            $('#idDistrito').html(s);
+
+                        }
+
+                    });
+        });
+
+    });
+</script>
