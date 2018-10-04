@@ -4,7 +4,9 @@ namespace Gpstel.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity;
     using System.Data.Entity.Spatial;
+    using System.Linq;
 
     [Table("Vehiculo")]
     public partial class Vehiculo
@@ -58,5 +60,123 @@ namespace Gpstel.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Pago> Pago { get; set; }
+
+
+
+
+
+        public void guardarEditar()
+        {
+
+
+            try
+            {
+                using (var context = new ModelGps())
+                {
+                    if (this.idcliente == 0)
+                    {
+                        context.Entry(this).State = EntityState.Added;
+                    }
+                    else
+                    {
+                        context.Entry(this).State = EntityState.Modified;
+                    }
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
+
+        public List<Vehiculo> listarVehiculo()
+        {
+            var listarVehiculo = new List<Vehiculo>();
+            //var listarClientes = new List<Cliente>();
+
+            try
+            {
+                using (var context = new ModelGps())
+                {
+
+                    listarVehiculo = context.Vehiculo
+                        .Include("Cliente")
+                        .Include("GPS")
+                        .ToList();
+
+
+                    //  listarClientes = context.Cliente.GroupJoin(context.Distrito, cli => cli.iddistrito,
+                    //     dis => dis.iddistrito, (cli, dis) => new { cli, dis }).ToList();
+
+
+
+                    //   listarCliente = context.Database.SqlQuery<Cliente>("select * from Cliente cli inner join Distrito di on cli.iddistrito = di.iddistrito inner join Provincia p on di.idprovincia = p.idprovincia inner join Departamento de on p.iddepartamento= de.iddepartamento")
+                    // .ToList();
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message);
+            }
+
+
+            return listarVehiculo;
+        }
+
+
+        public Vehiculo obtenerVehiculo(int id)
+        {
+
+            var objVehiculo = new Vehiculo();
+
+            try
+            {
+                using (var context = new ModelGps())
+                {
+                    objVehiculo = context.Vehiculo
+                        .Include("vehiculo")
+                        .Include("GPS")
+                        .Where(x => x.idcliente == id)
+                        .Single();
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message);
+            }
+            return objVehiculo;
+
+        }
+
+        public void eliminarVehiculo()
+        {
+
+            try
+            {
+                using (var context = new ModelGps())
+                {
+                    context.Entry(this).State = EntityState.Deleted;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
+
+
     }
 }

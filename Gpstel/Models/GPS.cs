@@ -137,5 +137,36 @@ namespace Gpstel.Models
                 throw;
             }
         }
+
+
+        public List<GPS> obtenerGpsNoRepetido()
+        {
+
+            var noRepetido = new List<GPS>();
+            try
+            {
+
+                using (var context = new ModelGps())
+                {
+
+
+
+                    //  noRepetido = context.CHIP.SqlQuery("Select * from CHIP where not exists (select null from GPS where GPS.idchip = CHIP.idchip)")
+                    //    .ToList();
+
+
+                    noRepetido = context.Database.SqlQuery<GPS>("Select * from GPS where not exists (select null from Vehiculo where Vehiculo.idgps = GPS.idgps)")
+                   .ToList();
+
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return noRepetido;
+        }
     }
 }

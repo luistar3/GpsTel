@@ -20,7 +20,7 @@
         </div>
         <div class="table-data__tool-right">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevo" onclick="limpiar();">
-                <i class="zmdi zmdi-plus"></i>Agregar Nuevo GPS
+                <i class="zmdi zmdi-plus"></i>Nuevo Cliente
             </button>
 
         </div>
@@ -47,7 +47,7 @@
             </tr>
         </thead>
         <tbody>
-
+          
             @foreach (var item in Model)
             {
 
@@ -76,19 +76,23 @@
 
 
 
-
+                    
 
                     <td>
                         <div class="table-data-feature">
 
-                            <button type="button" class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#nuevo" onclick="obtenerGps('@item.idcliente')">
+                            <button type="button" class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#nuevo" onclick="obtenerCliente('@item.idcliente')">
                                 <i class="zmdi zmdi-edit"></i>
                             </button>
 
                             <a href="#" title="Eliminar" class="item" onclick="eliminar('@item.idcliente')">
                                 <i class="zmdi zmdi-delete"> </i>
-
                             </a>
+
+
+                            <a href="#" class="item" onclick="ob('@item.idcliente')"><i class="zmdi zmdi-circle"> </i></a>
+
+
 
                         </div>
                     </td>
@@ -103,13 +107,16 @@
         <tfoot>
             <tr>
                 <th>ID</th>
-                <th>Modelo</th>
-                <th>Estado de Uso</th>
-                <th>Garantia</th>
-                <th>Chip</th>
-                <th>Fecha</th>
-                <th>Imei</th>
-
+                <th>Fecha del Contrato</th>
+                <th>Estado Del Cliente</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>DNI/RUC</th>
+                <th>Telefono</th>
+                <th>Celular</th>
+                <th>Correo</th>
+                <th>Direccion</th>
+                <th>Distrito</th>
                 <th></th>
             </tr>
         </tfoot>
@@ -174,12 +181,12 @@
                         <input type="text" class="form-control" id="idCelular" placeholder="Celular" />
                     </div>
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Telefono:</label>
+                        <label for="recipient-name" class="col-form-label">Correo:</label>
                         <input type="email" class="form-control" id="idEmail" placeholder="Email" />
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Direccion</label>
-                        <input type="number" class="form-control" id="Dirección" placeholder="Dirección" />
+                        <input type="text" class="form-control" id="idDireccion" placeholder="Dirección" />
                     </div>
 
                     <div class="form-group">
@@ -195,24 +202,97 @@
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Provincia:</label>
-                        <select class="form-control" name="idEstadoUso" id="idProvincia"></select>
+                        <select class="form-control" name="idProvincia" id="idProvincia"></select>
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Distrito:</label>
-                        <select class="form-control" name="idEstadoUso" id="idDistrito"></select>
+                        <select class="form-control" name="idDistrito" id="idDistrito"></select>
                     </div>
 
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <input type="button" value="Guardar" class="btn btn-primary" id="guardar" onclick="guardarGps()" />
+                <input type="button" value="Guardar" class="btn btn-primary" id="guardar" onclick="guardarCliente()" />
             </div>
         </div>
     </div>
 </div>
+<script>
 
 
+    function obtenerCliente(idcliente) {
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("getCliente", "Cliente")",
+                        data: JSON.stringify({ id: idcliente }),
+                        contentType: "application/json",
+
+
+                        success: function (cliente) {
+
+                            $("#idcliente").val(cliente.jsoncliente.idCliente);
+                            $("#idFecha").val(cliente.jsoncliente.fecha_contrato);
+                            $("#idEstado").val(cliente.jsoncliente.estado);
+                            $("#idNombre").val(cliente.jsoncliente.nombre);
+                            $("#idApellido").val(cliente.jsoncliente.apellido);
+                            $("#idDniRuc").val(cliente.jsoncliente.dni_ruc);
+                            $("#idTelefono").val(cliente.jsoncliente.telefono);
+                            $("#idCelular").val(cliente.jsoncliente.celular);
+                            $("#idEmail").val(cliente.jsoncliente.correo);
+                            $("#idDireccion").val(cliente.jsoncliente.direccion);
+                            $("#idDistrito").val();
+
+                            var s = '<option value="' + cliente.jsondistrito.iddistrito + '">' + cliente.jsondistrito.nombre + '</option>';
+                            $('#idDistrito').html(s);
+                           console.log(cliente);
+
+
+                        }
+
+                    });
+          }
+
+</script>
+
+<script>
+
+
+
+    function guardarCliente() {
+
+        var url = "@Url.Action("guardarEditar", "Cliente")";
+        var cliente = $("#idcliente").val();
+
+        var fecha = $("#idFecha").val();
+        var estado = $("#idEstado").val();
+        var nombre = $("#idNombre").val();
+        var apellido = $("#idApellido").val();
+        var dniRuc = $("#idDniRuc").val();
+        var telefono = $("#idTelefono").val();
+        var celular = $("#idCelular").val();
+        var email = $("#idEmail").val();
+        var direccion = $("#idDireccion").val();
+        var distrito = $("#idDistrito").val();
+        var objChip = { idcliente: cliente, fecha_contrato: fecha, estado: estado, nombre: nombre, apellido: apellido, dni_ruc: dniRuc, telefono: telefono, celular: celular, correo: email, direccion: direccion, iddistrito: distrito };
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(objChip),
+            contentType: "application/json",
+            success: function (respuesta) {
+                alert(respuesta.mensaje);
+                $('.modal').modal('hide');
+
+            }
+
+        });
+    }
+
+</script>
 
 
 <script>
@@ -232,8 +312,8 @@
         $('#idDepartamento').on('change', function ()
         {
 
-            var departamento = $('#idDepartamento option:selected').val();      
-            
+            var departamento = $('#idDepartamento option:selected').val();
+
                 $.ajax({
                         type: "POST",
                         url: "@Url.Action("cargarProvincias", "Cliente")",
@@ -241,9 +321,9 @@
                         contentType: "application/json",
                     success: function (provincias) {
                         console.log(provincias);
-                         
 
-                            var s= '<option value="-1">Seleccione una Provincia</option>'; 
+
+                            var s= '<option value="-1">Seleccione una Provincia</option>';
 
                             for (var i = 0; i < provincias.length; i++) {
                                 s += '<option value="' + provincias[i].idprovincia + '">' + provincias[i].nombre + '</option>';
@@ -259,8 +339,8 @@
         $('#idProvincia').on('change', function ()
         {
 
-            var provincia = $('#idProvincia option:selected').val();      
-            
+            var provincia = $('#idProvincia option:selected').val();
+
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("cargarDitritos", "Cliente")",
@@ -268,7 +348,7 @@
                     contentType: "application/json",
                     success: function (distrito) {
                         console.log(distrito);
-                                                   
+
                         var s = '';
                         for (var i = 0; i < distrito.length; i++) {
                             s += '<option value="' + distrito[i].iddistrito + '">' + distrito[i].nombre + '</option>';
@@ -283,3 +363,36 @@
 
     });
 </script>
+
+<script>
+
+    function limpiar() {
+
+        $("#idcliente").val("0");
+        $("#idFecha").val("");
+        $("#idEstado").val("");
+        $("#idNombre").val("");
+        $("#idApellido").val("");
+        $("#idDniRuc").val("");
+        $("#idTelefono").val("");
+        $("#idCelular").val("");
+        $("#idEmail").val("");
+        $("#idDireccion").val("");
+    }
+</script>
+
+
+<script>
+
+    function eliminar(id) {
+        location.href = "@Url.Action("eliminarCliente", "Cliente")"+"/"+id;
+    }
+
+
+     function ob(id) {                   
+         location.href = "@Url.Action("observacion", "ObCliente")" + "/" + id;                 
+    }
+    
+   
+</script>
+

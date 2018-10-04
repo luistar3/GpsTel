@@ -61,7 +61,8 @@ namespace Gpstel.Models
 
         public void guardarEditar()
         {
-
+            
+            
             try
             {
                 using (var context = new ModelGps())

@@ -374,6 +374,8 @@
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\GpsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ObClienteController.cs" />
+    <Compile Include="Controllers\VehiculoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -406,6 +408,9 @@
     <Content Include="Views\Chip\Index.cshtml" />
     <Content Include="Views\Gps\Index.cshtml" />
     <Content Include="Views\Cliente\Index.cshtml" />
+    <Content Include="Views\ObCliente\observacion.cshtml" />
+    <Content Include="Views\Vehiculo\Index.cshtml" />
+    <Content Include="Views\Vehiculo\nuevo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

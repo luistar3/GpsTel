@@ -25,7 +25,7 @@ namespace Gpstel.Models
     }
     public partial class jsonCliente {
         public string idCliente { get; set; }
-        public string fechaContrato { get; set; }
+        public string fecha_contrato { get; set; }
         public string estado { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
@@ -34,7 +34,7 @@ namespace Gpstel.Models
         public string celular  { get; set; }
         public string correo { get; set; }
         public string direccion { get; set; }
-        public string idDistrito { get; set; }
+        public string iddistrito { get; set; }
 
 
     }
@@ -61,5 +61,15 @@ namespace Gpstel.Models
         public jsonGps jsonGps { get; set; }
     
     }
+
+    public partial class jsonClienteDistrito
+    {
+        public jsonCliente jsoncliente { get; set; }
+        public jsonDistrito jsondistrito { get; set; }
+        public jsonProvincia jsonprovincia { get; set; }
+
+    }
+
+
 
 }
