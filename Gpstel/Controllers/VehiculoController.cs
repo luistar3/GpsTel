@@ -13,6 +13,10 @@ namespace Gpstel.Controllers
     {
 
         // GET: Vehiculo
+<<<<<<< HEAD
+=======
+        private Cliente objCliente = new Cliente();
+>>>>>>> avance 10 de octubre 2018
         private GPS objGps = new GPS();
         private Vehiculo objVihiculo = new Vehiculo();
         public ActionResult Index()
@@ -31,10 +35,19 @@ namespace Gpstel.Controllers
 
             if (id == 0)
             {
+<<<<<<< HEAD
+=======
+                ViewBag.cliente = objCliente.listarCliente();
+                ViewBag.gps = objGps.obtenerGpsNoRepetido();
+>>>>>>> avance 10 de octubre 2018
                 return View(vehiculo);
             }
             else
             {
+<<<<<<< HEAD
+=======
+                ViewBag.cliente = objCliente.listarCliente();
+>>>>>>> avance 10 de octubre 2018
                 ViewBag.gps = objGps.obtenerGpsNoRepetido();
                 return View(vehiculo.obtenerVehiculo(id));
             }
